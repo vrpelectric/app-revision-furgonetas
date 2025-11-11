@@ -1,0 +1,68 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'dev.flutter.flutter-gradle-plugin'
+}
+
+def props = new Properties()
+def propsFile = rootProject.file('local.properties')
+if (propsFile.exists()) {
+    propsFile.withReader('UTF-8') { props.load(it) }
+}
+
+def appVersionCode = (props['flutter.versionCode'] ?: '2').toInteger()
+def appVersionName = props['flutter.versionName'] ?: '1.0.1'
+
+android {
+    namespace 'com.vrp.app_revision_furgonetas'
+    compileSdk 36
+    ndkVersion "27.0.12077973"
+
+    defaultConfig {
+        applicationId "com.vrp.app_revision_furgonetas"
+        minSdkVersion flutter.minSdkVersion
+        targetSdkVersion flutter.targetSdkVersion
+        versionCode appVersionCode
+        versionName appVersionName
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+        coreLibraryDesugaringEnabled = true
+    }
+
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+
+    signingConfigs {
+        release {
+            storeFile file("C:/Users/jaume/my-release-key.jks")
+            storePassword "JaUmE25-"
+            keyAlias "my-key-alias"
+            keyPassword "JaUmE25-"
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled false
+            shrinkResources false
+        }
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+}
+
+flutter {
+    source '../..'
+}
+
+dependencies {
+    // Enables Java 17 APIs on older Android versions
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.2'
+}

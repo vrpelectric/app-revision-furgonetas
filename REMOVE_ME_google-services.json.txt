@@ -1,0 +1,1 @@
+Archivo google-services.json detectado. Elimina manualmente este archivo si ya no usas Firebase.
